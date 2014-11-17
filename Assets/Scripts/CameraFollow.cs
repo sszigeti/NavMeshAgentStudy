@@ -1,0 +1,21 @@
+﻿using UnityEngine;
+using System.Collections;
+
+public class CameraFollow : MonoBehaviour {
+
+	public Transform target;
+	float smoothing = 10f;
+	
+	Vector3 offset;
+
+	
+	void Start () {
+		offset = transform.position - target.position;
+	}
+	
+	
+	void LateUpdate () {
+		Vector3 targetCamPos = target.position + offset;
+		transform.position = Vector3.Lerp(transform.position, targetCamPos, smoothing * Time.deltaTime);
+	}
+}
