@@ -4,6 +4,7 @@ using System.Collections;
 public class GoToClick : MonoBehaviour {
 
 	public Transform targetIndicator;
+	Light lightComponent;
 	NavMeshAgent agent;
 	
 	int layerMask;
@@ -11,6 +12,7 @@ public class GoToClick : MonoBehaviour {
 
 	
 	void Awake () {
+		lightComponent = targetIndicator.GetComponent<Light>();
 		agent = GetComponent<NavMeshAgent> ();
 		layerMask = LayerMask.GetMask("Ground");
 	}
@@ -24,6 +26,7 @@ public class GoToClick : MonoBehaviour {
 			RaycastHit hit;
 			if (Physics.Raycast(ray, out hit, cameraRayDepth, layerMask))
 			{
+				lightComponent.enabled = true;
 				targetIndicator.position = new Vector3(
 					hit.point.x,
 					targetIndicator.position.y,

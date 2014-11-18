@@ -7,9 +7,13 @@ public class KeyboardControl : MonoBehaviour {
 
 	Vector3 movement;
 	float speed = 10f;
+	float rotationSpeed = 10f;
+	
+	Light clickTargetIndicator;
 	
 	void Start () {
 		agent = GetComponent<NavMeshAgent>();
+		clickTargetIndicator = FindObjectOfType<GoToClick>().targetIndicator.GetComponent<Light>();
 	}
 	
 	
@@ -20,8 +24,13 @@ public class KeyboardControl : MonoBehaviour {
 		movement.Set(h, 0, v);
 		if (h != 0 || v != 0)
 		{
+			clickTargetIndicator.enabled = false;
 			agent.enabled = false;
-			transform.rotation = Quaternion.LookRotation(movement);
+			transform.rotation = Quaternion.Slerp(
+				transform.rotation,
+				Quaternion.LookRotation(movement),
+				rotationSpeed * Time.deltaTime
+			);
 			
 		}
 		Vector3 p2 = transform.position + movement * speed * Time.deltaTime;
